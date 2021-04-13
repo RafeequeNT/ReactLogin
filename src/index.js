@@ -1,12 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import { Provider } from 'react-redux';
 import App from './App';
+import { store } from './_helpers';
 import reportWebVitals from './reportWebVitals';
 
+
+// setup fake backend
+import { configureFakeBackend } from './_helpers';
+configureFakeBackend();
 ReactDOM.render(
-  <React.StrictMode>
+ <React.StrictMode>
+    <Provider store={store} >
     <App />
+    </Provider>
+ 
   </React.StrictMode>,
   document.getElementById('root')
 );
