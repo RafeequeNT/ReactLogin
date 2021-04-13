@@ -33,7 +33,8 @@ const Login1= () => {
           },
         ]}
       >
-        <Input placeholder="Username" />
+        <Input
+        prefix={<UserOutlined className="site-form-item-icon" />}  placeholder="Username" />
       </Form.Item>
       <Form.Item
         name="password"
@@ -56,7 +57,7 @@ const Login1= () => {
         <Button type="primary" htmlType="submit" className="login-form-button">
           Log in
         </Button>
-        Or  <Link to="/Register">Register</Link>
+        Or  <Link to="/register">Register</Link>
       </Form.Item>
     </Form>
   );

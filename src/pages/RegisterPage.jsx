@@ -51,7 +51,7 @@ const RegisterPage = () => {
         </Form.Item>
 
         <Form.Item
-        name= 'uname'
+        name= 'username'
         label="Username"
         rules={[
           {
