@@ -1,7 +1,8 @@
 import { Form, Input,  Button } from 'antd';
 import {Link} from "react-router-dom";
- import { useDispatch } from 'react-redux';
+ import { useDispatch,useSelector} from 'react-redux';
  import { userActions } from '../_actions';
+ import {  notification } from 'antd';
 
 const layout = {
   labelCol: {
@@ -19,16 +20,39 @@ const validateMessages = {
 };
 /* eslint-enable no-template-curly-in-string */
 
+
+
+
 const RegisterPage = () => {
   const dispatch = useDispatch();
+  const alert = useSelector(state => state.alert);
+  
+  
+
+
   const onFinish = (value) => {
-    console.log(value);
+  
     dispatch(userActions.register(value));
+    openNotification();
+    
   };   
+
+  const openNotification = () => {
+    notification.open({
+      message: 'Notification',
+      description:
+        `${alert.message &&  `${alert.message}`}`,
+      className: 'custom-class',
+      style: {
+        width: 600,
+      },
+    });
+  };
+
   return (
     <Form {...layout} name="nest-messages"  onFinish={onFinish} validateMessages={validateMessages}>
       <Form.Item
-        name= 'fname'
+        name= 'firstName'
         label="First Name"
         rules={[
           {
@@ -39,7 +63,7 @@ const RegisterPage = () => {
         <Input />
       </Form.Item>
       <Form.Item
-        name= 'lname'
+        name= 'lastName'
         label="Last Name"
         rules={[
           {
@@ -76,7 +100,7 @@ const RegisterPage = () => {
         
      
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit"   >
           Submit
         </Button>
         <Link to="/Login">Cancel</Link>

@@ -1,8 +1,14 @@
+/* eslint-disable no-undef */
+import { authHeader } from '../_helpers/auth-header';
+
+
 function login(username, password) {
+    
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
+    
     };
 
     return fetch(`/users/authenticate`, requestOptions)
@@ -15,6 +21,7 @@ function login(username, password) {
         });
 }
 
+
 function register(user) {
     const requestOptions = {
         method: 'POST',
@@ -25,6 +32,52 @@ function register(user) {
     return fetch(`/users/register`, requestOptions).then(handleResponse);
 }
 
+function logout() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('user');
+}
+
+function getAll() {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`/users`, requestOptions).then(handleResponse);
+}                   //${config.apiUrl}
+
+function getById(id) {
+    const requestOptions = {
+        method: 'GET',
+        headers: authHeader()
+    };
+
+    return fetch(`${config.apiUrl}/users/${id}`, requestOptions).then(handleResponse);
+}
+
+
+
+function update(user) {
+    const requestOptions = {
+        method: 'PUT',
+        headers: { ...authHeader(), 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    };
+
+    return fetch(`${config.apiUrl}/users/${user.id}`, requestOptions).then(handleResponse);;
+}
+
+// prefixed function name with underscore because delete is a reserved word in javascript
+function _delete(id) {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: authHeader()
+    };
+
+    return fetch(`/users/${id}`, requestOptions).then(handleResponse);
+}                //${config.apiUrl}
+
+
 
 function handleResponse(response) {
     return response.text().then(text => {
@@ -32,8 +85,8 @@ function handleResponse(response) {
         if (!response.ok) {
             if (response.status === 401) {
                 // auto logout if 401 response returned from api
-                // logout();
-                // location.reload(true);
+                logout();
+                //location.reload(true);
             }
 
             const error = (data && data.message) || response.statusText;
@@ -43,7 +96,15 @@ function handleResponse(response) {
         return data;
     });
 }
+
+
 export const userService={
     login,
-    register
+    logout,
+    register,
+    getAll,
+    getById,
+    update,
+    delete: _delete
+    
 }

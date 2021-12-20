@@ -1,6 +1,11 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input,  Button }  from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import {Link} from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import {Link,useLocation} from "react-router-dom";
+import React, { useEffect } from 'react';
+import { userActions } from '../_actions';
+
+
 const layout = {
     labelCol: {
       span: 8,
@@ -9,19 +14,49 @@ const layout = {
       span: 6,
     },
   };
-
+ 
+  
+  
 const Login1= () => {
+  
+    
+  const loggingIn = useSelector(state => state.authentication.loggingIn);
+  
+
+    const dispatch = useDispatch();
+    const location = useLocation();
+    
+    
+
+   
+  
   const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-  };
+      console.log('Received values of form: ', values);
+      const { from } = location.state || { from: { pathname: "/" } };
+       dispatch(userActions.login(values.username,values.password,from));    
+       
+      
+     };
+    
+    
+      useEffect(() => {   
+        
+     dispatch(userActions.logout()); 
+       
+   }, );
+ 
+   
+
 
   return (
     <Form {...layout} 
       name="normal_login"
       initialValues={{
         remember: true,
+        
       }}
       onFinish={onFinish}
+      
     >
       <Form.Item
       label="username"
@@ -54,8 +89,9 @@ const Login1= () => {
       </Form.Item>
       
       <Form.Item  wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
-        <Button type="primary" htmlType="submit" className="login-form-button">
-          Log in
+        <Button type="primary" htmlType="submit" className="login-form-button" >  {loggingIn && <span className="spinner-border spinner-border-sm mr-1"></span>}
+                        
+          Login
         </Button>
         Or  <Link to="/register">Register</Link>
       </Form.Item>

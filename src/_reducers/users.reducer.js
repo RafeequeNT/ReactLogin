@@ -1,4 +1,4 @@
-import { userConstants } from '../_constants';
+import { userConstants } from '../_constants/user.constants';
 
 export function users(state = {}, action) {
     switch (action.type) {
@@ -14,6 +14,7 @@ export function users(state = {}, action) {
             return {
                 error: action.error
             };
+            
         case userConstants.DELETE_REQUEST:
             // add 'deleting:true' property to user being deleted
             return {
